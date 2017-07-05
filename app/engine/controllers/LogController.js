@@ -1,29 +1,12 @@
 var Database = require("../classes/Database.js");
 
-var fs = require("fs");
-
 var LogController = function() {
   function getLogs(req, res, path) {
     var dateTime = new Date().toLocaleString();
     
-    // Database.select('id, err, badge, created_at, is_read', 'tbl_logs', null, 'id DESC', 20, (data) => {
-    //   res.render(path, data);
-    // });
-
-    fs.readFile('./db/logs.json', 'utf8', (err, fdata) => {
-      if (err) throw err;
-      var data = [];
-      var datas = fdata.split('\n');
-      var len = datas.length < 100 ? datas.length : 100;
-      for(var i = len-1;i > 0;i--) {
-        var d = JSON.parse(datas[i]);
-        d.info = JSON.stringify(d);
-        data.push(d);
-      }
-      var result = {data: data};
-      res.render(path, result);
+    Database.select('id, err, badge, created_at, is_read', 'tbl_logs', null, 'id DESC', 20, (data) => {
+      res.render(path, data);
     });
-
   }
   
   function addLog(io, req, res) {
@@ -48,29 +31,9 @@ var LogController = function() {
     };
     
     // TODO: Validate
-    // Database.insert('tbl_logs', logException, (data) => {
-    //   var sendData = data.record;
-    //       sendData.id = data.id;
-      
-    //   io.emit('exception-logged', {
-    //     data: sendData
-    //   });
-      
-    //   res.send(JSON.stringify({
-    //     success: true
-    //   }));
-    // });
-
-    var path = './db/logs.json',
-        states = fs.statSync(path);
-    console.log(states.size)
-    if(states.size > 10*1024*1024) {
-      fs.unlinkSync(path);
-    }
-    fs.appendFile('./db/logs.json', '\n'+JSON.stringify(logException), (err) => {
-      if (err) throw err;
-      var sendData = logException;
-      // sendData.id = data.id;
+    Database.insert('tbl_logs', logException, (data) => {
+      var sendData = data.record;
+          sendData.id = data.id;
       
       io.emit('exception-logged', {
         data: sendData
@@ -80,7 +43,6 @@ var LogController = function() {
         success: true
       }));
     });
-
   }
   
   function getExceptionData(req, res) {

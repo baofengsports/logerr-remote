@@ -60,44 +60,39 @@ var App = function() {
     $('#log-list').on('click', 'ul li', function() {
       $(this).siblings().removeClass('active-log');
       $(this).addClass('active-log');
-
-      debugger
-
-      var detail = $(this).data('info');
-      printLogSummary(detail);
       
-    //   window.location.hash = 'id=' + $(this).data('id');
+      window.location.hash = 'id=' + $(this).data('id');
       
-    //   $.ajax({
-    //     url: '/log-read',
-    //     type: 'post',
-    //     dataType: 'json',
-    //     data: {
-    //       id: $(this).data('id')
-    //     },
-    //     success: function(res) {
-    //       console.log('read success');
-    //     },
-    //     error: function() {
-    //       throw 'dicks';
-    //     }
-    //   });
+      $.ajax({
+        url: '/log-read',
+        type: 'post',
+        dataType: 'json',
+        data: {
+          id: $(this).data('id')
+        },
+        success: function(res) {
+          console.log('read success');
+        },
+        error: function() {
+          throw 'dicks';
+        }
+      });
       
-    //   $.ajax({
-    //     url: '/exception-data',
-    //     type: 'post',
-    //     dataType: 'json',
-    //     data: {
-    //       id: $(this).data('id')
-    //     },
-    //     success: function(res) {
-    //       printLogSummary(res);
-    //     },
-    //     error: function() {
-    //       throw 'dicks';
-    //     }
-    //   });
-    // });
+      $.ajax({
+        url: '/exception-data',
+        type: 'post',
+        dataType: 'json',
+        data: {
+          id: $(this).data('id')
+        },
+        success: function(res) {
+          printLogSummary(res);
+        },
+        error: function() {
+          throw 'dicks';
+        }
+      });
+    });
   }
   
   function printLogSummary(res) {
