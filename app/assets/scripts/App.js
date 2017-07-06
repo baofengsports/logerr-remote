@@ -12,7 +12,7 @@ var App = function() {
       
       // TODO: Refactor
       var t;
-      t  = '<li data-id="' + msg.data.id + '" data-info=\''+ JSON.stringify(msg.data) + '\' class="log-unread">';
+      t  = '<li data-id="' + msg.data.id + '" class="log-unread">';
       t += '<div class="log-item-wrapper">';
       t += '<div class="log-info clear">';
       t += '<div class="log-badge development-badge">' + msg.data.badge + '</div>';
@@ -60,42 +60,38 @@ var App = function() {
     $('#log-list').on('click', 'ul li', function() {
       $(this).siblings().removeClass('active-log');
       $(this).addClass('active-log');
-
-      var detail = $(this).data('info');
-      printLogSummary({data: [detail]});
-
       
-      // window.location.hash = 'id=' + $(this).data('id');
+      window.location.hash = 'id=' + $(this).data('id');
       
-      // $.ajax({
-      //   url: '/log-read',
-      //   type: 'post',
-      //   dataType: 'json',
-      //   data: {
-      //     id: $(this).data('id')
-      //   },
-      //   success: function(res) {
-      //     console.log('read success');
-      //   },
-      //   error: function() {
-      //     throw 'dicks';
-      //   }
-      // });
+      $.ajax({
+        url: '/log-read',
+        type: 'post',
+        dataType: 'json',
+        data: {
+          id: $(this).data('id')
+        },
+        success: function(res) {
+          console.log('read success');
+        },
+        error: function() {
+          throw 'dicks';
+        }
+      });
       
-      // $.ajax({
-      //   url: '/exception-data',
-      //   type: 'post',
-      //   dataType: 'json',
-      //   data: {
-      //     id: $(this).data('id')
-      //   },
-      //   success: function(res) {
-      //     printLogSummary(res);
-      //   },
-      //   error: function() {
-      //     throw 'dicks';
-      //   }
-      // });
+      $.ajax({
+        url: '/exception-data',
+        type: 'post',
+        dataType: 'json',
+        data: {
+          id: $(this).data('id')
+        },
+        success: function(res) {
+          printLogSummary(res);
+        },
+        error: function() {
+          throw 'dicks';
+        }
+      });
     });
   }
   
@@ -107,7 +103,7 @@ var App = function() {
     $('.log-summary-details').removeClass('hide');
     
     //Remove Read Reciept
-    // $('#log-list').find('li[data-id="' + data.id + '"]').removeClass('log-unread');
+    $('#log-list').find('li[data-id="' + data.id + '"]').removeClass('log-unread');
     
     // TODO: Refactor this shitty code
     wrapper.find('h2').text(data.err);
