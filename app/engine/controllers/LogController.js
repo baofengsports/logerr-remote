@@ -18,8 +18,8 @@ var LogController = function() {
     var logException = {
       err: params.error,
       file_name: params.filename,
-      line_no: params.line ? params.line : -1,
-      col_no: params.column,
+      line_no: params.line ? params.line : 0,
+      col_no: params.column ? params.line : 0,
       stack_trace: params.stackTrace,
       referrer_url: req.headers.referer,
       created_at: new Date(),
