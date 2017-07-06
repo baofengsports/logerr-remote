@@ -16,18 +16,18 @@ var LogController = function() {
         dformat = [d.getFullYear() ,d.getMonth()+1, d.getDate()].join('-') + ' ' + [d.getHours(), d.getMinutes(), d.getSeconds()].join(':');
 
     var logException = {
-      err: params.error ? params.error : '',
-      file_name: params.filename ? params.filename : '',
-      line_no: params.line ? params.line : '',
-      col_no: params.column ? params.column : '',
-      stack_trace: params.stackTrace ? params.stackTrace : '',
+      err: params.error,
+      file_name: params.filename,
+      line_no: params.line ? params.line : -1,
+      col_no: params.column,
+      stack_trace: params.stackTrace,
       referrer_url: req.headers.referer,
       created_at: new Date(),
       updated_at: new Date(),
       client_time: dformat,
       user_agent: params.userAgent,
       all_params: JSON.stringify(params),
-      badge: params.badge ? params.badge : '',
+      badge: params.badge
     };
     
     // TODO: Validate
