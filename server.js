@@ -41,7 +41,7 @@ app.post('/log-read', function(req, res) {
   LogController.markExceptionAsRead(req, res);
 });
 
-http.listen(8901, function () {
+var server = http.listen(8901, function () {
   var host = server.address().address;
   var port = server.address().port;
 
